@@ -32,3 +32,15 @@ export async function createTable(): Promise<void> {
         )
     `);
 }
+
+// broj svih propusnica u bazi
+export async function getTotalCount(): Promise<number> {
+    const result = await pool.query("SELECT COUNT(*) FROM propusnice");
+    return Number(result.rows[0].count); // COUNT dolazi kao string, pretvaramo ga u Number
+}
+
+// broj propusnica sa statusom ACTIVE
+export async function getActiveCount(): Promise<number> {
+    const result = await pool.query("SELECT COUNT(*) FROM propusnice WHERE status = 'ACTIVE'"); // samo WHERE status = 'ACTIVE'
+    return Number(result.rows[0].count); 
+}
