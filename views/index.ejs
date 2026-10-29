@@ -17,5 +17,13 @@
             <td><%= active %></td>
         </tr>
     </table>
+    <% if (email) { %>
+        <p>Prijavljeni ste kao <%= email %></p>
+        <form action="/logout" method="post">
+            <button type="submit">Odjavi se</button>
+        </form>
+    <% } else { %>
+        <p><a href="/login">Prijavi se</a></p>
+    <% } %>
 </body>
 </html>
