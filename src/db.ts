@@ -44,3 +44,19 @@ export async function getActiveCount(): Promise<number> {
     const result = await pool.query("SELECT COUNT(*) FROM propusnice WHERE status = 'ACTIVE'"); // samo WHERE status = 'ACTIVE'
     return Number(result.rows[0].count); 
 }
+
+// sve propusnice, najnovije prve
+export async function getAllPasses(): Promise<Pass[]> {
+    const result = await pool.query<Pass>("SELECT * FROM propusnice ORDER BY issued_at DESC");
+    return result.rows;
+}
+
+// poništavanje propusnice, status u CANCELLED
+export async function cancelPass(id: string): Promise<void> {
+    await pool.query("UPDATE propusnice SET status = 'CANCELLED' WHERE id = $1", [id]);
+}
+
+// brisanje propusnice iz baze
+export async function deletePass(id: string): Promise<void> {
+    await pool.query("DELETE FROM propusnice WHERE id = $1", [id]);
+}

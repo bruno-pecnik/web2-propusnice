@@ -22,6 +22,40 @@
         <form action="/logout" method="post">
             <button type="submit">Odjavi se</button>
         </form>
+
+        <h2>Propusnice</h2>
+        <% if (passes.length === 0) { %>
+            <p>Nema propusnica.</p>
+        <% } else { %>
+            <table border="1">
+                <tr>
+                    <th>Ime i prezime</th>
+                    <th>Dokument</th>
+                    <th>Izdano</th>
+                    <th>Status</th>
+                    <th>Akcije</th>
+                </tr>
+                <% for (const p of passes) { %>
+                    <tr>
+                        <td><%= p.name %></td>
+                        <td><%= p.document %></td>
+                        <td><%= p.issued_at.toLocaleString("hr-HR", { timeZone: "Europe/Zagreb" }) %></td>
+                        <td><%= p.status %></td>
+                        <td>
+                            <% if (p.status === "ACTIVE") { %>
+                                <form action="/admin/<%= p.id %>/cancel" method="post" style="display:inline">
+                                    <button type="submit">Poništi</button>
+                                </form>
+                            <% } %>
+                            <form action="/admin/<%= p.id %>/delete" method="post" style="display:inline"
+                                  onsubmit="return confirm('Obrisati propusnicu?')">
+                                <button type="submit">Obriši</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% } %>
+            </table>
+        <% } %>
     <% } else { %>
         <p><a href="/login">Prijavi se</a></p>
     <% } %>
