@@ -60,3 +60,15 @@ export async function cancelPass(id: string): Promise<void> {
 export async function deletePass(id: string): Promise<void> {
     await pool.query("DELETE FROM propusnice WHERE id = $1", [id]);
 }
+
+// regex koji provjerava je li tekst u UUID formatu
+const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// dohvaća jednu propusnicu po id-u
+export async function getPass(id: string): Promise<Pass | null> {
+    if (!uuidPattern.test(id)) { // null ako nije u UUID formatu
+        return null; 
+    }
+    const result = await pool.query<Pass>("SELECT * FROM propusnice WHERE id = $1", [id]);
+    return result.rows[0] ?? null; // null ako propusnica ne postoji
+}

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import oidc from "express-openid-connect";
-import { getTotalCount, getActiveCount, getAllPasses, cancelPass, deletePass } from "../db.js";
+import { getTotalCount, getActiveCount, getAllPasses, getPass, cancelPass, deletePass } from "../db.js";
 
 const { requiresAuth } = oidc; // iz biblioteke izvuče requiresAuth
 
@@ -26,6 +26,16 @@ router.post("/admin/:id/cancel", requiresAuth(), async (req, res) => {
 router.post("/admin/:id/delete", requiresAuth(), async (req, res) => {
     await deletePass(String(req.params.id));
     res.redirect("/");
+});
+
+// javna stranica propusnice, na nju vodi QR kod
+router.get("/info/:id", async (req, res) => {
+    const pass = await getPass(String(req.params.id)); // dohvat propusnice po id-u iz URL-a
+    if (!pass) { // ako propusnica ne postoji
+        res.status(404).send("Propusnica ne postoji.");
+        return;
+    }
+    res.render("info", { pass });
 });
 
 export default router;

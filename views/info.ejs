@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <title>Propusnica</title>
+</head>
+<body>
+    <!-- podaci propusnice, stranica je javna -->
+    <h1>Propusnica</h1>
+
+    <table border="1">
+        <tr>
+            <th>Status</th>
+            <td><%= pass.status %></td>
+        </tr>
+        <tr>
+            <th>Ime i prezime</th>
+            <td><%= pass.name %></td>
+        </tr>
+        <tr>
+            <th>Dokument</th>
+            <td><%= pass.document %></td>
+        </tr>
+        <tr>
+            <th>Izdano</th>
+            <td><%= pass.issued_at.toLocaleString("hr-HR", { timeZone: "Europe/Zagreb" }) %></td>
+        </tr>
+    </table>
+</body>
+</html>
