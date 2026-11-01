@@ -2,7 +2,8 @@ import "dotenv/config";
 import express from "express";
 import oidc from "express-openid-connect";
 import { createTable } from "./db.js"; 
-import webRouter from "./routes/web.js";
+import webRouter from "./routes/web.js"; // rute za web stranice
+import apiRouter from "./routes/api.js"; // rute za API 
 
 const { auth } = oidc; // funkcija za Auth0 prijavu iz biblioteke
 
@@ -18,7 +19,7 @@ app.set("view engine", "ejs"); // express koristi EJS za prikaz starnice
 app.use(auth({
     authRequired: false, // nisu sve stranice zaštićene jer je početna javna
     idpLogout: true, // pri odjavi odjavi i Auth0
-    secret: process.env.SECRET ?? "", 
+    secret: process.env.SESSION_SECRET ?? "",
     baseURL, 
     clientID: process.env.AUTH0_CLIENT_ID ?? "",
     clientSecret: process.env.AUTH0_CLIENT_SECRET ?? "",
@@ -36,6 +37,7 @@ app.post("/logout", (_req, res) => {
     res.oidc.logout({ returnTo: baseURL }); // nakon odjave povratak na početnu stranicu
 });
 
+app.use("/passes", apiRouter); // API rute pod /passes
 app.use(webRouter); // uključuje rute za stanicu iz web.ts
 
 await createTable(); // funkcija za stvaranje tablice iz db.ts

@@ -72,3 +72,13 @@ export async function getPass(id: string): Promise<Pass | null> {
     const result = await pool.query<Pass>("SELECT * FROM propusnice WHERE id = $1", [id]);
     return result.rows[0] ?? null; // null ako propusnica ne postoji
 }
+
+// kreira novu propusnicu u bazi
+// šaljemo samo ime i dokument pa id, vrijeme i status postavlja baza
+export async function createPass(name: string, document: string): Promise<Pass> {
+    const result = await pool.query<Pass>(
+        "INSERT INTO propusnice (name, document) VALUES ($1, $2) RETURNING *", // vrati novi red s id-em
+        [name, document]
+    );
+    return result.rows[0]!; // nova propusnica
+}
