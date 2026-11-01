@@ -14,6 +14,7 @@ const port = Number(process.env.PORT) || 3000;
 const baseURL = process.env.BASE_URL ?? `http://localhost:${port}`; 
 
 app.set("view engine", "ejs"); // express koristi EJS za prikaz starnice
+app.set("trust proxy", true); // za Render 
 
 // prijava preko Auth0
 app.use(auth({
