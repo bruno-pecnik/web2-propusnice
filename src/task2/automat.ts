@@ -1,6 +1,6 @@
-import { writeFile } from "node:fs/promises"; // import writeFile iz fs, verzija /promises
+import { writeFile } from "node:fs/promises"; 
 
-// pomoćna funkcija, provjerava HTTP odgovor i baca grešku za neočekivani status
+// pomoćna funkcija, provjerava HTTP odgovor i baca grešku 
 function checkStatus(response: Response, expected: number, action: string): void {
     if (response.status !== expected) {
         throw new Error(`${action} failed: ${response.status} ${response.statusText}`);

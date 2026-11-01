@@ -2,29 +2,33 @@
 <html lang="hr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Propusnica</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <!-- podaci propusnice, stranica je javna -->
-    <h1>Propusnica</h1>
+    <main class="card">
+        <h1>Propusnica</h1>
 
-    <table border="1">
-        <tr>
-            <th>Status</th>
-            <td><%= pass.status %></td>
-        </tr>
-        <tr>
-            <th>Ime i prezime</th>
-            <td><%= pass.name %></td>
-        </tr>
-        <tr>
-            <th>Dokument</th>
-            <td><%= pass.document %></td>
-        </tr>
-        <tr>
-            <th>Izdano</th>
-            <td><%= pass.issued_at.toLocaleString("hr-HR", { timeZone: "Europe/Zagreb" }) %></td>
-        </tr>
-    </table>
+        <table>
+            <tr>
+                <th>Status</th>
+                <td><span class="status <%= pass.status.toLowerCase() %>"><%= pass.status %></span></td>
+            </tr>
+            <tr>
+                <th>Ime i prezime</th>
+                <td><%= pass.name %></td>
+            </tr>
+            <tr>
+                <th>Dokument</th>
+                <td><%= pass.document %></td>
+            </tr>
+            <tr>
+                <th>Izdano</th>
+                <td><%= pass.issued_at.toLocaleString("hr-HR", { timeZone: "Europe/Zagreb" }) %></td>
+            </tr>
+        </table>
+    </main>
 </body>
 </html>

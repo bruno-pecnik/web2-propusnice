@@ -38,6 +38,7 @@ app.post("/logout", (_req, res) => {
     res.oidc.logout({ returnTo: baseURL }); // nakon odjave povratak na početnu stranicu
 });
 
+app.use(express.static("public")); // CSS iz mape public
 app.use("/passes", apiRouter); // API rute pod /passes
 app.use(webRouter); // uključuje rute za stanicu iz web.ts
 

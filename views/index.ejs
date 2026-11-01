@@ -2,62 +2,71 @@
 <html lang="hr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sustav propusnica</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <h1>Sustav propusnica</h1>
+    <main>
+        <h1>Sustav propusnica</h1>
 
-    <table border="1">
-        <tr>
-            <th>Ukupno</th>
-            <th>Aktivne</th>
-        </tr>
-        <tr>
-            <td><%= total %></td>
-            <td><%= active %></td>
-        </tr>
-    </table>
-    <% if (email) { %>
-        <p>Prijavljeni ste kao <%= email %></p>
-        <form action="/logout" method="post">
-            <button type="submit">Odjavi se</button>
-        </form>
+        <div class="stats">
+            <div>
+                <span class="number"><%= total %></span><br>
+                Ukupno
+            </div>
+            <div>
+                <span class="number"><%= active %></span><br>
+                Aktivne
+            </div>
+        </div>
 
-        <h2>Propusnice</h2>
-        <% if (passes.length === 0) { %>
-            <p>Nema propusnica.</p>
-        <% } else { %>
-            <table border="1">
-                <tr>
-                    <th>Ime i prezime</th>
-                    <th>Dokument</th>
-                    <th>Izdano</th>
-                    <th>Status</th>
-                    <th>Akcije</th>
-                </tr>
-                <% for (const p of passes) { %>
+        <% if (email) { %>
+            <div class="user">
+                Prijavljeni ste kao <%= email %>
+                <form class="inline" action="/logout" method="post">
+                    <button type="submit" class="logout">Odjavi se</button>
+                </form>
+            </div>
+
+            <hr>
+
+            <h2>Propusnice</h2>
+            <% if (passes.length === 0) { %>
+                <p>Nema propusnica.</p>
+            <% } else { %>
+                <table>
                     <tr>
-                        <td><%= p.name %></td>
-                        <td><%= p.document %></td>
-                        <td><%= p.issued_at.toLocaleString("hr-HR", { timeZone: "Europe/Zagreb" }) %></td>
-                        <td><%= p.status %></td>
-                        <td>
-                            <% if (p.status === "ACTIVE") { %>
-                                <form action="/admin/<%= p.id %>/cancel" method="post" style="display:inline">
-                                    <button type="submit">Poništi</button>
-                                </form>
-                            <% } %>
-                            <form action="/admin/<%= p.id %>/delete" method="post" style="display:inline"
-                                  onsubmit="return confirm('Obrisati propusnicu?')">
-                                <button type="submit">Obriši</button>
-                            </form>
-                        </td>
+                        <th>Ime i prezime</th>
+                        <th>Dokument</th>
+                        <th>Izdano</th>
+                        <th>Status</th>
+                        <th>Akcije</th>
                     </tr>
-                <% } %>
-            </table>
+                    <% for (const p of passes) { %>
+                        <tr>
+                            <td><%= p.name %></td>
+                            <td><%= p.document %></td>
+                            <td><%= p.issued_at.toLocaleString("hr-HR", { timeZone: "Europe/Zagreb" }) %></td>
+                            <td><span class="status <%= p.status.toLowerCase() %>"><%= p.status %></span></td>
+                            <td>
+                                <% if (p.status === "ACTIVE") { %>
+                                    <form class="inline" action="/admin/<%= p.id %>/cancel" method="post">
+                                        <button type="submit">Poništi</button>
+                                    </form>
+                                <% } %>
+                                <form class="inline" action="/admin/<%= p.id %>/delete" method="post"
+                                      onsubmit="return confirm('Obrisati propusnicu?')">
+                                    <button type="submit" class="danger">Obriši</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% } %>
+                </table>
+            <% } %>
+        <% } else { %>
+            <p><a href="/login" class="login">Prijavi se</a></p>
         <% } %>
-    <% } else { %>
-        <p><a href="/login">Prijavi se</a></p>
-    <% } %>
+    </main>
 </body>
 </html>
